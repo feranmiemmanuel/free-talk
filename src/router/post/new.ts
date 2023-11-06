@@ -1,4 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
+import Post from "src/models/post";
 
 const router = Router()
 
@@ -9,6 +10,13 @@ router.post('api/post/new', async (req: Request, res: Response, next: NextFuncti
         error.status = 400;
         return next(error)
     }
+
+    const newPost = new Post({
+        title,
+        content
+    })
+    await newPost.save()
+    return res.status(201).send(newPost)
 })
 
 export { router as newPostRouter}
