@@ -19,4 +19,4 @@ router.delete('/api/post/delete/:id',async (req:Request, res: Response, next: Ne
     res.status(200).json({ success: true, message: 'post deleted successfully'})
 })
 
-export { router as deletePost }
+export { router as deletePostRouter }

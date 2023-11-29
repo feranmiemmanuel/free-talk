@@ -3,14 +3,45 @@ dotenv.config();
 
 import express, { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
+import cors from 'cors'
+import {
+    newCommentRouter,
+    newPostRouter,
+    updateCommentRouter,
+    updatePostRouter,
+    deleteCommentRouter,
+    deletePostRouter,
+    showPostRouter
+} from './router'
 
 const app = express();
+app.use(cors({
+    origin: "*",
+    optionsSuccessStatus: 200
+}))
 app.use(express.urlencoded({
     extended: false
 }));
 
 app.use(express.json());
 
+//comments
+app.use(newCommentRouter)
+app.use(updateCommentRouter)
+app.use(deleteCommentRouter)
+
+//posts
+app.use(newPostRouter)
+app.use(updatePostRouter)
+app.use(showPostRouter)
+app.use(deletePostRouter)
+
+//Route not found error
+app.all('*', (req, res, next) => {
+    const error = new Error('The requested route does not exist') as CustomError;
+    error.status = 404;
+    next(error)
+})
 declare global {
     interface CustomError extends Error {
         status?: number
@@ -21,7 +52,7 @@ app.use((error: CustomError, req: Request, res: Response, next: NextFunction) =>
     if (error.status) {
         return res.status(error.status).json({ message: error.message})
     }
-    return res.status(500).json({ message: 'Something Went Wrong' })
+    return res.status(500).json({ message: 'Something Went Wrong' }) 
 })
 
 const start = async () => {
