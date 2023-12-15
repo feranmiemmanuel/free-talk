@@ -26,15 +26,15 @@ app.use(express.urlencoded({
 app.use(express.json());
 
 //comments
-app.use(newCommentRouter)
-app.use(updateCommentRouter)
-app.use(deleteCommentRouter)
+app.use('/api',newCommentRouter)
+app.use('/api',updateCommentRouter)
+app.use('/api',deleteCommentRouter)
 
 //posts
-app.use(newPostRouter)
-app.use(updatePostRouter)
-app.use(showPostRouter)
-app.use(deletePostRouter)
+app.use('/api',newPostRouter)
+app.use('/api',updatePostRouter)
+app.use('/api',showPostRouter)
+app.use('/api',deletePostRouter)
 
 //Route not found error
 app.all('*', (req, res, next) => {
@@ -64,7 +64,7 @@ const start = async () => {
         throw new Error('database connection error')
     }
 
-    app.listen(8080, () => console.log('server is up and running on port 8080'));
+    app.listen(7124, () => console.log('server is up and running on port 7124'));
 }
 
 start()

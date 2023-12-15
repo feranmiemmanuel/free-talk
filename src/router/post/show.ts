@@ -4,7 +4,7 @@ import { Types } from "mongoose";
 
 const router = Router()
 
-router.get('api/post/show',async (req:Request, res:Response, next:NextFunction) => {
+router.get('/post/show',async (req:Request, res:Response, next:NextFunction) => {
     const { id } = req.body;
     let post:any = Post;
     if (!id) {

@@ -3,7 +3,7 @@ import Comment from "../../models/comment";
 
 const router = Router()
 
-router.post('api/comment/:id',async (req: Request, res: Response, next: NextFunction) => {
+router.post('/comment/:id',async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params
     const { content } = req.body
     if (!id) {

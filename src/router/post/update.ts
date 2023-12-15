@@ -3,7 +3,7 @@ import Post from "../../models/post";
 
 const router = Router();
 
-router.post('/api/post/update/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/post/update/:id', async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params
     const { title, content } = req.body
     if (!id) {

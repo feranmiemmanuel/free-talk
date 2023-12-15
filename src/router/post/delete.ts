@@ -3,7 +3,7 @@ import Post from '../../models/post'
 
 const router = Router()
 
-router.delete('/api/post/delete/:id',async (req:Request, res: Response, next: NextFunction) => {
+router.delete('/post/delete/:id',async (req:Request, res: Response, next: NextFunction) => {
     const { id } = req.params
     if (!id) {
         const error = new Error('Post id is required') as CustomError

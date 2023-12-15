@@ -4,7 +4,7 @@ import Post from "../../models/post";
 
 const router = Router()
 
-router.post('api/comment/new/:postId',async (req: Request, res: Response, next: NextFunction) => {
+router.post('/comment/new/:postId',async (req: Request, res: Response, next: NextFunction) => {
     const { userName, content } = req.body;
     const { postId } = req.params
     if (!content) {
