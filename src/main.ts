@@ -36,12 +36,6 @@ app.use('/api',updatePostRouter)
 app.use('/api',showPostRouter)
 app.use('/api',deletePostRouter)
 
-//Route not found error
-app.all('*', (req, res, next) => {
-    const error = new Error('The requested route does not exist') as CustomError;
-    error.status = 404;
-    next(error)
-})
 declare global {
     interface CustomError extends Error {
         status?: number
@@ -53,6 +47,13 @@ app.use((error: CustomError, req: Request, res: Response, next: NextFunction) =>
         return res.status(error.status).json({ message: error.message})
     }
     return res.status(500).json({ message: 'Something Went Wrong' }) 
+})
+
+//Route not found error
+app.all('*', (req, res, next) => {
+    const error = new Error('The requested route does not exist') as CustomError;
+    error.status = 404;
+    next(error)
 })
 
 const start = async () => {
