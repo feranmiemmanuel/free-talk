@@ -19,7 +19,7 @@ router.post('/comment/new/:postId',async (req: Request, res: Response, next: Nex
     await newComment.save()
     const updatedPost = await Post.findOneAndUpdate(
         { _id: postId },
-        { $push: { newComment } },
+        { $push: { comments: newComment } },
         { new: true }
     )
     return res.status(201).send(updatedPost)

@@ -25,4 +25,4 @@ router.post('/post/update/:id', async (req: Request, res: Response, next: NextFu
     }
     res.status(200).send(updatedPost)
 })
-export { Router as updatePostRouter }
+export { router as updatePostRouter }

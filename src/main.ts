@@ -42,18 +42,18 @@ declare global {
     }
 }
 
-app.use((error: CustomError, req: Request, res: Response, next: NextFunction) => {
-    if (error.status) {
-        return res.status(error.status).json({ message: error.message})
-    }
-    return res.status(500).json({ message: 'Something Went Wrong' }) 
-})
-
 //Route not found error
 app.all('*', (req, res, next) => {
     const error = new Error('The requested route does not exist') as CustomError;
     error.status = 404;
     next(error)
+})
+
+app.use((error: CustomError, req: Request, res: Response, next: NextFunction) => {
+    if (error.status) {
+        return res.status(error.status).json({ message: error.message})
+    }
+    return res.status(500).json({ message: 'Something Went Wrong' }) 
 })
 
 const start = async () => {
@@ -65,7 +65,7 @@ const start = async () => {
         throw new Error('database connection error')
     }
 
-    app.listen(7124, () => console.log('server is up and running on port 7124'));
+    app.listen(3000, () => console.log('server is up and running on port 3000'));
 }
 
 start()
