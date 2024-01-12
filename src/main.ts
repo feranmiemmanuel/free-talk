@@ -4,14 +4,21 @@ dotenv.config();
 import express, { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import cors from 'cors'
+import cookieSession from "cookie-session";
+import { currentUser, requireAuth } from "../common";
 import {
-    newCommentRouter,
     newPostRouter,
-    updateCommentRouter,
     updatePostRouter,
-    deleteCommentRouter,
+    showPostRouter,
+    newCommentRouter,
     deletePostRouter,
-    showPostRouter
+
+    updateCommentRouter,
+    deleteCommentRouter,
+
+    signInRouter,
+    signOutRouter,
+    signUpRouter,
 } from './router'
 
 const app = express();
@@ -23,18 +30,29 @@ app.use(express.urlencoded({
     extended: false
 }));
 
-app.use(express.json());
+app.set('trust proxy', true)
 
+app.use(express.json());
+app.use(cookieSession({
+    signed: false,
+    secure: false
+}))
+
+app.use(currentUser )
 //comments
-app.use('/api',newCommentRouter)
-app.use('/api',updateCommentRouter)
-app.use('/api',deleteCommentRouter)
+app.use('/api' , requireAuth, newCommentRouter)
+app.use('/api', requireAuth, updateCommentRouter)
+app.use('/api', requireAuth, deleteCommentRouter)
 
 //posts
-app.use('/api',newPostRouter)
-app.use('/api',updatePostRouter)
-app.use('/api',showPostRouter)
-app.use('/api',deletePostRouter)
+app.use('/api', requireAuth, newPostRouter)
+app.use('/api', requireAuth, updatePostRouter)
+app.use('/api', showPostRouter)
+app.use('/api', requireAuth, deletePostRouter)
+
+app.use('/api', signInRouter)
+app.use('/api', signOutRouter)
+app.use('/api', signUpRouter)
 
 declare global {
     interface CustomError extends Error {
@@ -58,6 +76,7 @@ app.use((error: CustomError, req: Request, res: Response, next: NextFunction) =>
 
 const start = async () => {
     if(!process.env.MONGO_URI) throw new Error('MONGO_URI is required')
+    if(!process.env.JWT_KEY) throw new Error('JWT_KEY is required')
 
     try {
         await mongoose.connect(process.env.MONGO_URI)
