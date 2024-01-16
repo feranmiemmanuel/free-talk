@@ -13,7 +13,7 @@ router.delete('/comment/:commentId/delete/:postId',async (req :Request, res: Res
     try {
         await Comment.findOneAndRemove({ _id: commentId })
     } catch (err) {
-        return next(new BadRequestError('Error deleting comment'))
+        next(new Error('Error deleting comment') as CustomError)
     }
     await Post.findOneAndUpdate(
         { _id: postId},
