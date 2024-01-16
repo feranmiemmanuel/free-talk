@@ -5,7 +5,7 @@ import express, { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import cors from 'cors'
 import cookieSession from "cookie-session";
-import { currentUser, requireAuth } from "../common";
+import { currentUser, requireAuth, BadRequestError } from "../common";
 import {
     newPostRouter,
     updatePostRouter,
@@ -62,9 +62,7 @@ declare global {
 
 //Route not found error
 app.all('*', (req, res, next) => {
-    const error = new Error('The requested route does not exist') as CustomError;
-    error.status = 404;
-    next(error)
+    return next(new BadRequestError('The requested route does not exist'))
 })
 
 app.use((error: CustomError, req: Request, res: Response, next: NextFunction) => {

@@ -1,14 +1,13 @@
 import { Router, Request, Response, NextFunction } from "express";
 import Post from "../../models/post";
+import { BadRequestError } from "../../../common";
 
 const router = Router()
 
 router.post('/post/new', async (req: Request, res: Response, next: NextFunction) => {
     const { title, content } = req.body;
     if (!title || !content) {
-       let error = new Error('the title and content field is required') as CustomError;
-        error.status = 400;
-        return next(error)
+       return next(new BadRequestError('the title and content field is required'))
     }
 
     const newPost = new Post({

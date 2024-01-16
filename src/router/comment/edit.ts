@@ -1,5 +1,6 @@
 import { Request, Router, Response, NextFunction } from "express";
 import Comment from "../../models/comment";
+import { BadRequestError } from "../../../common";
 
 const router = Router()
 
@@ -7,14 +8,10 @@ router.post('/comment/:id',async (req: Request, res: Response, next: NextFunctio
     const { id } = req.params
     const { content } = req.body
     if (!id) {
-        const commentError = new Error('Comment id is required') as CustomError
-        commentError.status = 400;
-        next(commentError)
+        return next(new BadRequestError('Comment id is required'))
     }
     if (!content) {
-        const contentError = new Error('content field is required') as CustomError
-        contentError.status = 400;
-        next(contentError)
+        return next(new BadRequestError('content field is required'))
     }
     let updatedComment;
     try {
@@ -23,9 +20,7 @@ router.post('/comment/:id',async (req: Request, res: Response, next: NextFunctio
             { content: content}
         )
     } catch (err) {
-        const updateError = new Error('Error updating comment') as CustomError
-        updateError.status = 400
-        next(updateError)
+        return next(new BadRequestError('Error updating comment'))
     }
     res.status(200).send(updatedComment)
 })

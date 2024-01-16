@@ -1,6 +1,7 @@
 import { Request, Router, Response, NextFunction } from "express";
 import Comment from "../../models/comment";
 import Post from "../../models/post";
+import { BadRequestError } from "../../../common";
 
 const router = Router()
 
@@ -8,9 +9,7 @@ router.post('/comment/new/:postId',async (req: Request, res: Response, next: Nex
     const { userName, content } = req.body;
     const { postId } = req.params
     if (!content) {
-        let error = new Error('the content field is required') as CustomError;
-        error.status = 400;
-        return next(error)
+       return next(new BadRequestError('the content field is required'))
     }
     const newComment = new Comment({
         userName: userName ? userName : 'anonymous',
