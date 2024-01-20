@@ -5,7 +5,7 @@ import express, { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import cors from 'cors'
 import cookieSession from "cookie-session";
-import { currentUser, requireAuth, BadRequestError } from "../common";
+import { currentUser, requireAuth, errorHandler, NotFoundError } from "../common";
 import {
     newPostRouter,
     updatePostRouter,
@@ -54,23 +54,18 @@ app.use('/api', signInRouter)
 app.use('/api', signOutRouter)
 app.use('/api', signUpRouter)
 
+//Route not found error
+app.all('*', (req, res, next) => {
+    return next(new NotFoundError())
+})
+
 declare global {
     interface CustomError extends Error {
         status?: number
     }
 }
 
-//Route not found error
-app.all('*', (req, res, next) => {
-    return next(new BadRequestError('The requested route does not exist'))
-})
-
-app.use((error: CustomError, req: Request, res: Response, next: NextFunction) => {
-    if (error.status) {
-        return res.status(error.status).json({ message: error.message})
-    }
-    return res.status(500).json({ message: 'Something Went Wrong' }) 
-})
+app.use(errorHandler)
 
 const start = async () => {
     if(!process.env.MONGO_URI) throw new Error('MONGO_URI is required')
