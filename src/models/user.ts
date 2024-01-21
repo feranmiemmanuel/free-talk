@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
 import { authenticationService } from "../../common";
 
+export interface UserDoc extends mongoose.Document {
+    email: string,
+    password: string,
+    posts?: Array<any>
+}
+
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
