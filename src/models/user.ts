@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 import { authenticationService } from "../../common";
+import { PostDoc } from "./post";
 
 export interface UserDoc extends mongoose.Document {
     email: string,
     password: string,
     name: string,
-    posts?: Array<any>
+    posts?: Array<PostDoc>
 }
 
 export interface CreateUserDto {

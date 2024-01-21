@@ -10,7 +10,7 @@ router.post('/post/new', async (req: Request, res: Response, next: NextFunction)
        return next(new BadRequestError('the title and content field is required'))
     }
 
-    const newPost = new Post({
+    const newPost = Post.build({
         title,
         content
     })
