@@ -12,7 +12,7 @@ router.post('/signup',async (req: Request, res: Response, next: NextFunction) =>
 
   if(user) return next(new BadRequestError('Email is already in use'))
 
-  const newUser = new User({
+  const newUser = User.build({
     email,
     password,
     name
