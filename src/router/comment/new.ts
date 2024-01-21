@@ -11,7 +11,7 @@ router.post('/comment/new/:postId',async (req: Request, res: Response, next: Nex
     if (!content) {
        return next(new BadRequestError('the content field is required'))
     }
-    const newComment = new Comment({
+    const newComment = Comment.build({
         userName: userName ? userName : 'anonymous',
         content
     })
