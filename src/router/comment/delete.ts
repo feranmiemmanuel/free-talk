@@ -15,11 +15,13 @@ router.delete('/comment/:commentId/delete/:postId',async (req :Request, res: Res
     } catch (err) {
         next(new Error('Error deleting comment') as CustomError)
     }
-    await Post.findOneAndUpdate(
+    const post  = await Post.findOneAndUpdate(
         { _id: postId},
-        { $pull: { comments: commentId }}
+        { $pull: { comments: commentId } },
+        { new: true }
     )
-    res.status(200).json({success: true})
+    if (!post) return next(new Error())
+    res.status(200).send(post)
 })
 
 export { router as deleteCommentRouter }
