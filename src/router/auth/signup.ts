@@ -18,10 +18,19 @@ router.post('/signup',async (req: Request, res: Response, next: NextFunction) =>
     name
   })
   await newUser.save()
+  const token = jwt.sign({ email, userId: newUser._id}, process.env.JWT_KEY!, { expiresIn: "1h" })
   req.session = {
-    jwt: jwt.sign({ email, userId: newUser._id}, process.env.JWT_KEY!, { expiresIn: "1h" })
+    jwt: token
   }
-  res.status(201).send(newUser)
+  // res.status(201).send(newUser)
+  res.status(200).json({
+    user: {
+        _id: newUser._id,
+        email: newUser.email,
+        name: newUser.name,
+    },
+    token: token,
+  });
 })
 
 export { router as signUpRouter}

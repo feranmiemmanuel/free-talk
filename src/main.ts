@@ -41,6 +41,11 @@ app.use(cookieSession({
 }))
 
 app.use(currentUser )
+
+app.use('/api', signInRouter)
+app.use('/api', signUpRouter)
+app.use('/api', requireAuth, signOutRouter)
+
 //comments
 app.use('/api' , requireAuth, newCommentRouter)
 app.use('/api', requireAuth, updateCommentRouter)
@@ -53,10 +58,6 @@ app.use('/api', showPostRouter)
 app.use('/api', requireAuth, deletePostRouter)
 app.use('/api', requireAuth, addImagesRouter)
 app.use('/api', requireAuth, deleteImagesRouter)
-
-app.use('/api', signInRouter)
-app.use('/api', signOutRouter)
-app.use('/api', signUpRouter)
 
 //Route not found error
 app.all('*', (req, res, next) => {

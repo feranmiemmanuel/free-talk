@@ -41,8 +41,12 @@ const userSchema = new mongoose.Schema({
 })
 userSchema.pre("save",async function(done) {
     if (this.isModified('password') || this.isNew) {
-        const hashedPassword = authenticationService.pwdToHash(this.get('password'))
-        this.set('password', 'hashed')
+        try { 
+            const hashedPassword = await authenticationService.pwdToHash(this.get('password'))
+            this.set('password', hashedPassword)
+        } catch (error) {
+            console.error("Error hashing password:", error);
+        }
     }
     done()
 })

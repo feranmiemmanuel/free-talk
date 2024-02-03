@@ -17,7 +17,15 @@ router.post('/signin',async (req: Request, res: Response, next: NextFunction) =>
     const token = jwt.sign({ email,  userId: user._id }, process.env.JWT_KEY!, { expiresIn: "1h" })
 
     req.session = { jwt: token }
-    res.status(200).send(user)
+    // res.status(200).send(user)
+    res.status(200).json({
+        user: {
+            _id: user._id,
+            email: user.email,
+            name: user.name,
+        },
+        token: token,
+    });
 })
 
 export { router as signInRouter}
