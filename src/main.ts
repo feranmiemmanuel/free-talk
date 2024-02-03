@@ -12,6 +12,8 @@ import {
     showPostRouter,
     newCommentRouter,
     deletePostRouter,
+    addImagesRouter,
+    deleteImagesRouter,
 
     updateCommentRouter,
     deleteCommentRouter,
@@ -49,6 +51,8 @@ app.use('/api', requireAuth, newPostRouter)
 app.use('/api', requireAuth, updatePostRouter)
 app.use('/api', showPostRouter)
 app.use('/api', requireAuth, deletePostRouter)
+app.use('/api', requireAuth, addImagesRouter)
+app.use('/api', requireAuth, deleteImagesRouter)
 
 app.use('/api', signInRouter)
 app.use('/api', signOutRouter)
